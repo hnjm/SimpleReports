@@ -23,7 +23,6 @@ namespace SimpleReports
 
         }
 
-
         public ReportRenderer(string displayName, Stream reportDefinition)
         {
             this.displayName = displayName;
@@ -58,11 +57,16 @@ namespace SimpleReports
 
         public byte[] GetReportAsPdf<T>(List<T> data, dynamic param)
         {
-            var reportDataSource = new ReportDataSource("data", data);
+            var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
+            if (string.IsNullOrEmpty(datasourceName)) 
+            {
+                throw new ApplicationException("The report should contian at least 1 datasource");
+            }
+
+            var reportDataSource = new ReportDataSource(datasourceName, data);
             this.ReportViewer.LocalReport.DataSources.Add(reportDataSource);
 
             Dictionary<string, object> reportProperties = GetParameters(param);
-
             var listOfReportParameters = new List<ReportParameter>();
             foreach (var dictvalue in reportProperties)
             {
@@ -98,8 +102,8 @@ namespace SimpleReports
         public Dictionary<string, object> GetParameters(dynamic param)
         {
             var properties = param.GetType().GetProperties();
-
             var dictionary = new Dictionary<string, object>();
+
             foreach (PropertyInfo prop in properties)
             {
                 dictionary.Add(prop.Name, prop.GetValue(param));
