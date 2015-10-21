@@ -5,15 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SimpleReports")]
-[assembly: AssemblyDescription("Simple lib for rendering pdf reports from RDLC files")]
+[assembly: AssemblyTitle("SimpleReports.Example")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Joe van der Walt")]
-[assembly: AssemblyProduct("SimpleReports")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SimpleReports.Example")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("752932e6-d174-4ad9-922b-7bf856ef45fc")]
+[assembly: Guid("2f011282-8c3a-44d6-84a1-ca47a7421286")]
 
 // Version information for an assembly consists of the following four values:
 //
