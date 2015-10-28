@@ -101,7 +101,7 @@ namespace SimpleReports
         }
 
 
-        public byte[] GetReportAsPdf<T>(dynamic dataSources, dynamic param)
+        public byte[] GetReportAsPdf(dynamic dataSources, dynamic param)
         {
             var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
             if (string.IsNullOrEmpty(datasourceName))
@@ -113,7 +113,7 @@ namespace SimpleReports
             Dictionary<string, object> individualDataSources = GetParameters(dataSources);
             foreach (var datasource in individualDataSources)
             {
-                var dataList = datasource.Value as IList;
+                var dataList = datasource.Value; //as IList;
                 if (dataList != null)
                 {
                     var reportDataSource = new ReportDataSource(datasource.Key, dataList);

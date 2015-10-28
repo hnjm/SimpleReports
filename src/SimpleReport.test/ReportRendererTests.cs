@@ -49,7 +49,7 @@ namespace SimpleReport.Test
                     DataSet2 = new List<string>()
                 };
 
-                byte[] report = reportRenderer.GetReportAsPdf<string>(data, new { Foo = "Bar" });
+                byte[] report = reportRenderer.GetReportAsPdf(data, new { Foo = "Bar" });
                 Assert.IsTrue(report.Length > 0);
             }
         }
