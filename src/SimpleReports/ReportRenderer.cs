@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Reflection;
+using System.Collections;
 
 namespace SimpleReports
 {
@@ -58,13 +59,71 @@ namespace SimpleReports
         public byte[] GetReportAsPdf<T>(List<T> data, dynamic param)
         {
             var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
-            if (string.IsNullOrEmpty(datasourceName)) 
+            if (string.IsNullOrEmpty(datasourceName))
             {
                 throw new ApplicationException("The report should contian at least 1 datasource");
             }
 
             var reportDataSource = new ReportDataSource(datasourceName, data);
             this.ReportViewer.LocalReport.DataSources.Add(reportDataSource);
+
+            Dictionary<string, object> reportProperties = GetParameters(param);
+            var listOfReportParameters = new List<ReportParameter>();
+            foreach (var dictvalue in reportProperties)
+            {
+                listOfReportParameters.Add(new ReportParameter(dictvalue.Key, Convert.ToString(dictvalue.Value)));
+            }
+            this.ReportViewer.LocalReport.SetParameters(listOfReportParameters);
+
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string fileNameExtension = string.Empty;
+
+            string deviceInfo = @"<DeviceInfo>
+		      <OutputFormat>PDF</OutputFormat>
+		      <PageWidth>21cm</PageWidth>
+		      <PageHeight>29.7cm</PageHeight>,
+		      <MarginTop>0.4cm</MarginTop>
+		      <MarginLeft>1.2cm</MarginLeft>
+		      <MarginRight>0.0cm</MarginRight>
+		      <MarginBottom>0.4cm</MarginBottom>
+		    </DeviceInfo>";
+
+            Warning[] warnings = null;
+            string[] streams = null;
+            byte[] renderedBytes = null;
+
+            //Render the report
+            renderedBytes = this.ReportViewer.LocalReport.Render(
+                "PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+            return renderedBytes;
+        }
+
+
+        public byte[] GetReportAsPdf<T>(dynamic dataSources, dynamic param)
+        {
+            var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
+            if (string.IsNullOrEmpty(datasourceName))
+            {
+                throw new ApplicationException("The report should contian at least 1 datasource");
+            }
+
+
+            Dictionary<string, object> individualDataSources = GetParameters(dataSources);
+            foreach (var datasource in individualDataSources)
+            {
+                var dataList = datasource.Value as IList;
+                if (dataList != null)
+                {
+                    var reportDataSource = new ReportDataSource(datasource.Key, dataList);
+                    this.ReportViewer.LocalReport.DataSources.Add(reportDataSource);
+                }
+                else
+                {
+                    throw new ApplicationException("All the properties in the for dataSources must be ILists");
+                }
+            }
 
             Dictionary<string, object> reportProperties = GetParameters(param);
             var listOfReportParameters = new List<ReportParameter>();

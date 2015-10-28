@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Model\Invoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportRendererTests.cs" />
   </ItemGroup>
@@ -58,6 +59,19 @@
       <Project>{6103f9c3-5fa8-4821-a902-9787a14891f0}</Project>
       <Name>SimpleReports</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ExampleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ExampleReport2.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\SimpleReports.Example.Model.Invoice.datasource" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
