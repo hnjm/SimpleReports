@@ -26,6 +26,9 @@ namespace SimpleReports
 
         public ReportRenderer(string displayName, Stream reportDefinition)
         {
+
+
+
             this.displayName = displayName;
             this.reportDefinition = reportDefinition;
         }
