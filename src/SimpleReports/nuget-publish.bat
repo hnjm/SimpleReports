@@ -1,2 +1,2 @@
 nuget pack SimpleReports.csproj -IncludeReferencedProjects -Prop Configuration=Release
-nuget push SimpleReports.1.0.0.3.nupkg
+nuget push SimpleReports.1.0.0.7.nupkg

@@ -59,7 +59,7 @@ namespace SimpleReports
             ReportViewer.KeepSessionAlive = false;
         }
 
-        public byte[] GetReportAsPdf<T>(List<T> data, dynamic param)
+        public byte[] GetReportAsPdf<T>(List<T> data, dynamic param, string Extension, bool landscape)
         {
             var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
             if (string.IsNullOrEmpty(datasourceName))
@@ -82,15 +82,22 @@ namespace SimpleReports
             string encoding = string.Empty;
             string fileNameExtension = string.Empty;
 
-            string deviceInfo = @"<DeviceInfo>
-		      <OutputFormat>PDF</OutputFormat>
-		      <PageWidth>21cm</PageWidth>
-		      <PageHeight>29.7cm</PageHeight>,
-		      <MarginTop>0.4cm</MarginTop>
-		      <MarginLeft>1.2cm</MarginLeft>
-		      <MarginRight>0.0cm</MarginRight>
-		      <MarginBottom>0.4cm</MarginBottom>
-		    </DeviceInfo>";
+            var deviceInfo = new StringBuilder();
+            deviceInfo.Append("<DeviceInfo>");
+            deviceInfo.Append("<OutputFormat>" + Extension + @"</OutputFormat>");
+            if (landscape)
+            {
+                deviceInfo.Append("<PageWidth>29.7cm</PageWidth><PageHeight>21.0cm</PageHeight>,");
+            }
+            else
+            {
+                deviceInfo.Append("<PageWidth>21.0cm</PageWidth><PageHeight>29.7cm</PageHeight>,");
+            }
+            deviceInfo.Append(@"<MarginTop>0.1cm</MarginTop>
+		      <MarginLeft>0.3cm</MarginLeft>
+		      <MarginRight>0.3cm</MarginRight>
+		      <MarginBottom>0.1cm</MarginBottom>
+		    </DeviceInfo>");
 
             Warning[] warnings = null;
             string[] streams = null;
@@ -98,13 +105,13 @@ namespace SimpleReports
 
             //Render the report
             renderedBytes = this.ReportViewer.LocalReport.Render(
-                "PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+                "PDF", deviceInfo.ToString(), out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
 
             return renderedBytes;
         }
 
 
-        public byte[] GetReportAsPdf(dynamic dataSources, dynamic param)
+        public byte[] GetReportAsPdf(dynamic dataSources, dynamic param, string Extension, bool landscape)
         {
             var datasourceName = this.ReportViewer.LocalReport.GetDataSourceNames().FirstOrDefault();
             if (string.IsNullOrEmpty(datasourceName))
@@ -140,15 +147,22 @@ namespace SimpleReports
             string encoding = string.Empty;
             string fileNameExtension = string.Empty;
 
-            string deviceInfo = @"<DeviceInfo>
-		      <OutputFormat>PDF</OutputFormat>
-		      <PageWidth>21cm</PageWidth>
-		      <PageHeight>29.7cm</PageHeight>,
-		      <MarginTop>0.4cm</MarginTop>
-		      <MarginLeft>1.2cm</MarginLeft>
-		      <MarginRight>0.0cm</MarginRight>
-		      <MarginBottom>0.4cm</MarginBottom>
-		    </DeviceInfo>";
+            var deviceInfo = new StringBuilder();
+            deviceInfo.Append("<DeviceInfo>");
+            deviceInfo.Append("<OutputFormat>" + Extension + @"</OutputFormat>");
+            if (landscape)
+            {
+                deviceInfo.Append("<PageWidth>29.7cm</PageWidth><PageHeight>21.0cm</PageHeight>,");
+            }
+            else
+            {
+                deviceInfo.Append("<PageWidth>21.0cm</PageWidth><PageHeight>29.7cm</PageHeight>,");
+            }
+            deviceInfo.Append(@"<MarginTop>0.1cm</MarginTop>
+		      <MarginLeft>0.3cm</MarginLeft>
+		      <MarginRight>0.3cm</MarginRight>
+		      <MarginBottom>0.1cm</MarginBottom>
+		    </DeviceInfo>");
 
             Warning[] warnings = null;
             string[] streams = null;
@@ -156,7 +170,7 @@ namespace SimpleReports
 
             //Render the report
             renderedBytes = this.ReportViewer.LocalReport.Render(
-                "PDF", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+                "PDF", deviceInfo.ToString(), out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
 
             return renderedBytes;
         }
